@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Document Title
+    ============================================= -->
+    <title>Feedback</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Feedback</a>
+    </div>
+    <div class="collapse navbar-collapse" id="mainMenu">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">Меню</a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                    <a class="dropdown-item" href="/">Основная страница</a>
+                    <a class="dropdown-item" href="comment">Написать отзыв</a>
+                    <a class="dropdown-item" href="view">Посмотр отзывов</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="stat">Статистика</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container">
+
+    <div class="py-5 row">
+
+        <div class="col-md-8 order-md-1">
+            <h4 class="mb-3">Отправка сообщения</h4>
+
+            <form class="needs-validation" method="post" novalidate="">
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName">Имя</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" value="" required>
+                        <div class="invalid-feedback">
+                            Поле "Имя" обязательно для заполнения.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="lastName">Фамилия</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" value="" required>
+                        <div class="invalid-feedback">
+                            Поле "Фамилия" обязательно для заполнения.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="middleName">Отчество <span class="text-muted">(Опционально)</span></label>
+                    <input type="text" class="form-control" id="middleName" name="middleName" placeholder="">
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="email">Email <span class="text-muted">(Опционально)</span></label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com">
+                        <div class="invalid-feedback">
+                            Пожалуйста введите правильный адрес.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="phone">Телефон <span class="text-muted">(Опционально)</span></label>
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="(XXX)XXX-XX-XX">
+                        <div class="invalid-feedback">
+                            Пожалуйста введите правильный телефон.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="region">Регион <span class="text-muted">(Опционально)</span></label>
+                        <select class="custom-select d-block w-100" id="region" name="region">
+                            <option value="0">Выберите...</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Пожалуйста выберите страну.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="city">Город <span class="text-muted">(Опционально)</span></label>
+                        <select class="custom-select d-block w-100" id="city" name="city">
+                            <option value="">Выберите...</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Пожалуйста выберите город.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="comment">Ваш комментарий</label>
+                    <textarea class="form-control" name="comment" id="comment" rows="5" required></textarea>
+                    <div class="invalid-feedback">
+                        Поле "Комментарий" обязательно к заполнению.
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" id="feedback_submit" type="submit">Отправить</button>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<!-- Footer Scripts -->
+
+<script type="text/javascript" src="/js/comment.js"></script>
+
+
+</body>
+
+</html>

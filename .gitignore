@@ -1,0 +1,21 @@
+# Intelli files
+*.iml
+.idea
+out
+
+#Project files
+__pycache__/
+*.py[cod]
+.env
+*.log
+
+# Database stuff
+*.sqlite
+migrations/
+clearmigration
+
+# Test fixtures
+fixtures/
+
+# Users media files
+media/
