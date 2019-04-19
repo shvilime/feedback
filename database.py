@@ -6,8 +6,8 @@ class DB(object):
     """ Объект для инициализации базы SQLite3  и выполнения операций с ней """
 
     def __db_initial__(self):
-        if not os.path.isfile(self.database):
-            # Прочтем скрипт из файла
+        if not os.path.isfile(self.database):       # Если файл базы данных не найден
+            # Прочтем скрипт первоначального создания базы из файла
             query = open('feedback.sql', 'r').read()
             # Проверим скрипт на завершенность, на всякий случай, хотя скрипт сделан нами и проверен
             if sqlite3.complete_statement(query):
@@ -31,7 +31,7 @@ class DB(object):
                 self.cursor = self.connection.cursor()
                 self.connected = True
             except sqlite3.Error as e:
-                print("Error connecting to database!")
+                print("Ошибка соединения с базой!")
 
     def close(self):
         """ Закрыть базу SQLite3 """
