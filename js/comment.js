@@ -8,7 +8,7 @@ var $ = jQuery.noConflict();
         $.ajax({
             url: '/listregion',
             dataType: 'json',
-            type: 'POST',
+            type: 'GET',
             success: function (json) {
                 for (i in json) {
                     $("#region").append("<option value=" + json[i][0] + ">" + json[i][1] + "</option>");
@@ -26,7 +26,7 @@ var $ = jQuery.noConflict();
         $.ajax({
             url: '/listcity',
             dataType: 'json',
-            type: 'POST',
+            type: 'GET',
             data: {region: regionid},
             success: function (json) {
                 for (i in json) {

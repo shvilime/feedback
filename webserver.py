@@ -44,13 +44,13 @@ class MyServer(BaseHTTPRequestHandler):
         content = ''
         self._check_path()
         self._set_headers()
-        if self._status == 200:     # Если запрашиваемый адрес известен
+        if self._status == 200 or self._status == 302:  # Если запрашиваемый адрес известен
             # Проверим, тип данных - это темплейт
             viewname = self.paths.get(self.path).get('view', '')
             if viewname:
                 # Получим class из модуля views и вызовем его для формирования контента
                 tmpl = getattr(views, viewname)()
-                content = tmpl.get(self.parameters)
+                content = tmpl.get(self.parameters, self._content_type)
             # Проверим, тип данных - это статичный файл
             static_file = self.paths.get(self.path).get('static', '')
             if static_file:
@@ -63,8 +63,7 @@ class MyServer(BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length).decode("UTF-8")
         self._check_path()
-        self._set_headers()
-        if self._status == 200:     # Если запрашиваемый адрес известен
+        if self._status == 200:  # Если запрашиваемый адрес известен
             # Проверим, тип данных - это известный темплейт
             viewname = self.paths.get(self.path).get('view', '')
             if viewname:
@@ -72,10 +71,16 @@ class MyServer(BaseHTTPRequestHandler):
                 tmpl = getattr(views, viewname)()
                 self.parameters = parse_qs(post_data, keep_blank_values=True)
                 content = tmpl.post(self.parameters)
-                # success_url = "/".join(self.path.split('/')[:-1])
-                # urlopen('http://localhost:8080'+success_url)
-                # Здесь я нe хочу ничего возвращать !!! хочу уйти на другую страницу.
-        self.wfile.write(bytes(content, 'UTF-8'))
+
+                success_url = "/"+"".join(self.path.split('/')[:-1])
+                self.redirect(success_url)
+
+        # self.wfile.write(bytes(content, 'UTF-8'))
+
+    def redirect(self, url):
+        self.send_response(302)
+        self.send_header('Location', url)
+        self.end_headers()
 
 
 def main():

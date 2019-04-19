@@ -32,17 +32,23 @@ class AbstractView:
             db = DB()
             return db.execute(self.query)
 
-    def get(self, params=None):
-        content = self._get_template()
-        values = None
-        if self.query.strip().upper().startswith('SELECT'):
+    def get(self, params=None, content_type="text/html"):
+        content = ""
+        if content_type == "text/html":
+            content = self._get_template()
+            values = None
+            if self.query.strip().upper().startswith('SELECT'):
+                values = self.get_data(params)
+            hf = HTMLFormatter()
+            content = hf.format(content, rows=values)
+        elif content_type == "text/json":
             values = self.get_data(params)
-        hf = HTMLFormatter()
-        return hf.format(content, rows=values)
+            content = json.dumps(values)
+        return content
 
     def post(self, params=None):
         values = self.get_data(params)
-        return json.dumps(values)
+        return "OK"
 
 
 class MainTmpl(AbstractView):
