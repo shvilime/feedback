@@ -5,7 +5,7 @@ from template import HTMLFormatter
 from webserver import ROOT
 
 
-class abstract_view():
+class AbstractView:
     """ Абстрактный класс. View.
         Аттрибуты:
         "query" - для работы с базой
@@ -45,25 +45,19 @@ class abstract_view():
         return json.dumps(values)
 
 
-# ********************************************************************************
-
-class main_tmpl(abstract_view):
+class MainTmpl(AbstractView):
     """ Просмотр основной страницы """
     template = 'index.html'
 
 
-# ********************************************************************************
-
-class comment_tmpl(abstract_view):
+class CommentTmpl(AbstractView):
     """ Добавление комментария """
     template = 'comment.html'
     query = '''INSERT INTO feedback (firstname, lastname, middlename, email, phone, region, city, comment)
         VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')'''
 
 
-# ********************************************************************************
-
-class view_tmpl(abstract_view):
+class ViewTmpl(AbstractView):
     """ Просмотр списка отзывов """
     template = 'view.html'
     query = '''select f.id, f.lastname || ' ' || f.firstname || ' ' || IFNULL(f.middlename,'') as user,
@@ -71,16 +65,12 @@ class view_tmpl(abstract_view):
                from feedback f left join city c on (f.city = c.id) left join region r on (f.region = r.id)'''
 
 
-# ********************************************************************************
-
-class delfeedback_tmpl(abstract_view):
+class DelFeedbackTmpl(AbstractView):
     """ Удаление отзыва """
     query = '''DELETE FROM feedback WHERE id = {};'''
 
 
-# ********************************************************************************
-
-class stat_tmpl(abstract_view):
+class StatTmpl(AbstractView):
     """ Просмотр статистики отзывов по регионам """
     template = 'stat.html'
     query = '''select * from (select r.id, r.name, count(f.id) as col from region r 
@@ -89,9 +79,7 @@ class stat_tmpl(abstract_view):
                where col>=1'''
 
 
-# ********************************************************************************
-
-class statreg_tmpl(abstract_view):
+class StatRegTmpl(AbstractView):
     """ Просмотр статистики в разрезе одного региона """
     template = 'statreg.html'
     query = '''select * from (select c.region, c.name, count(f.id) as col from city c 
@@ -100,15 +88,12 @@ class statreg_tmpl(abstract_view):
                where col>0 and region='{}' '''
 
 
-# ********************************************************************************
-
-class listregion_tmpl(abstract_view):
+class ListRegionTmpl(AbstractView):
     """ Выбрать список регионов для поля формы """
     query = '''select * from region'''
 
-# ********************************************************************************
 
-class listcity_tmpl(abstract_view):
+class ListCityTmpl(AbstractView):
     """ Выбрать список городов региона для поля формы """
     query = '''select * from city 
                where region='{}' '''

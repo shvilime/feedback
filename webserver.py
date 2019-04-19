@@ -11,14 +11,14 @@ ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 
 class MyServer(BaseHTTPRequestHandler):
     paths = {
-        '/': {'view': 'main_tmpl', 'type': 'text/html'},
-        '/comment': {'view': 'comment_tmpl', 'type': 'text/html'},
-        '/view': {'view': 'view_tmpl', 'type': 'text/html'},
-        '/stat': {'view': 'stat_tmpl', 'type': 'text/html'},
-        '/statreg': {'view': 'statreg_tmpl', 'type': 'text/html'},
-        '/view/delfeedback': {'view': 'delfeedback_tmpl', 'type': 'text/html'},
-        '/listregion': {'view': 'listregion_tmpl', 'type': 'text/json'},
-        '/listcity': {'view': 'listcity_tmpl', 'type': 'text/json'},
+        '/': {'view': 'MainTmpl', 'type': 'text/html'},
+        '/comment': {'view': 'CommentTmpl', 'type': 'text/html'},
+        '/view': {'view': 'ViewTmpl', 'type': 'text/html'},
+        '/stat': {'view': 'StatTmpl', 'type': 'text/html'},
+        '/statreg': {'view': 'StatRegTmpl', 'type': 'text/html'},
+        '/view/delfeedback': {'view': 'DelFeedbackTmpl', 'type': 'text/html'},
+        '/listregion': {'view': 'ListRegionTmpl', 'type': 'text/json'},
+        '/listcity': {'view': 'ListCityTmpl', 'type': 'text/json'},
         '/js/view.js': {'static': '/js/view.js', 'type': 'text/javascript'},
         '/js/comment.js': {'static': '/js/comment.js', 'type': 'text/javascript'}
 
