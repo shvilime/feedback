@@ -2,11 +2,8 @@ import time, os, sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
 from urllib.request import urlopen
+from settings import *
 import views
-
-HOST_NAME = 'localhost'
-PORT_NUMBER = 8080
-ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'feedback')
 
 
 class MyServer(BaseHTTPRequestHandler):

@@ -2,7 +2,7 @@ import os, json
 from urllib.request import urlopen
 from database import DB
 from template import HTMLFormatter
-from webserver import ROOT
+from settings import *
 
 
 class AbstractView:
