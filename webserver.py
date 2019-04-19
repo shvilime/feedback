@@ -25,7 +25,7 @@ class MyServer(BaseHTTPRequestHandler):
     _status = 200
 
     def _check_path(self):
-        # Проверяет пути и устанавливает статус
+        # Проверяет пути и устанавливает статус ответа
         self.parameters = parse_qs(urlparse(self.path).query)
         self.path = urlparse(self.path).path
         if self.path in self.paths:
@@ -44,14 +44,17 @@ class MyServer(BaseHTTPRequestHandler):
         content = ''
         self._check_path()
         self._set_headers()
-        if self._status == 200:
-            # Получим class из модуля views и вызовем их для формирования темплейта
+        if self._status == 200:     # Если запрашиваемый адрес известен
+            # Проверим, тип данных - это темплейт
             viewname = self.paths.get(self.path).get('view', '')
             if viewname:
+                # Получим class из модуля views и вызовем его для формирования контента
                 tmpl = getattr(views, viewname)()
                 content = tmpl.get(self.parameters)
+            # Проверим, тип данных - это статичный файл
             static_file = self.paths.get(self.path).get('static', '')
             if static_file:
+                # Просто прочитаем данные из файла
                 content = open(ROOT + static_file, 'r').read()
         self.wfile.write(bytes(content, 'UTF-8'))
 
@@ -61,10 +64,11 @@ class MyServer(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length).decode("UTF-8")
         self._check_path()
         self._set_headers()
-        if self._status == 200:
-            # Получим class из модуля views и вызовем их для формирования темплейта
+        if self._status == 200:     # Если запрашиваемый адрес известен
+            # Проверим, тип данных - это известный темплейт
             viewname = self.paths.get(self.path).get('view', '')
             if viewname:
+                # Получим class из модуля views и вызовем его для формирования темплейта
                 tmpl = getattr(views, viewname)()
                 self.parameters = parse_qs(post_data, keep_blank_values=True)
                 content = tmpl.post(self.parameters)
