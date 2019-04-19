@@ -70,7 +70,7 @@ class MyServer(BaseHTTPRequestHandler):
                 content = tmpl.post(self.parameters)
                 # success_url = "/".join(self.path.split('/')[:-1])
                 # urlopen('http://localhost:8080'+success_url)
-                # Здесь я нихочу ничего возвращать !!! хочу уйти на другую страницу.
+                # Здесь я нe хочу ничего возвращать !!! хочу уйти на другую страницу.
         self.wfile.write(bytes(content, 'UTF-8'))
 
 
