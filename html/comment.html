@@ -7,6 +7,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/feedback.css">
     <!-- Document Title
     ============================================= -->
     <title>Feedback</title>
@@ -38,86 +40,99 @@
 
 <div class="container">
 
-    <div class="py-5 row">
+    <div class="py-5 row justify-content-center">
 
         <div class="col-md-8 order-md-1">
-            <h4 class="mb-3">Отправка сообщения</h4>
 
-            <form class="needs-validation" action="/comment" method="post" novalidate="">
+            <div class="card">
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="firstName">Имя</label>
-                        <input type="text" class="form-control" id="firstName" name="firstName" value="" required>
-                        <div class="invalid-feedback">
-                            Поле "Имя" обязательно для заполнения.
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="lastName">Фамилия</label>
-                        <input type="text" class="form-control" id="lastName" name="lastName" value="" required>
-                        <div class="invalid-feedback">
-                            Поле "Фамилия" обязательно для заполнения.
-                        </div>
-                    </div>
+                <div class="card-header">
+                    <h4>Отправка отзыва</h4>
                 </div>
 
-                <div class="mb-3">
-                    <label for="middleName">Отчество <span class="text-muted">(Опционально)</span></label>
-                    <input type="text" class="form-control" id="middleName" name="middleName" placeholder="">
-                </div>
+                <div class="card-body">
+                    <form class="needs-validation" action="/comment" method="post" novalidate="">
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="email">Email <span class="text-muted">(Опционально)</span></label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com">
-                        <div class="invalid-feedback">
-                            Пожалуйста введите правильный адрес.
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName">Имя</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" value=""
+                                       required>
+                                <div class="invalid-feedback">
+                                    Поле "Имя" обязательно для заполнения.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName">Фамилия</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" value="" required>
+                                <div class="invalid-feedback">
+                                    Поле "Фамилия" обязательно для заполнения.
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="phone">Телефон <span class="text-muted">(Опционально)</span></label>
-                        <input type="tel" class="form-control" id="phone" name="phone" pattern="^\([0-9]+\)[0-9]+$"
-                               placeholder="(XXX)XXXXXXX">
-                        <div class="invalid-feedback">
-                            Пожалуйста введите правильный телефон.
+
+                        <div class="mb-3">
+                            <label for="middleName">Отчество <span class="text-muted">(Опционально)</span></label>
+                            <input type="text" class="form-control" id="middleName" name="middleName" placeholder="">
                         </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="region">Регион <span class="text-muted">(Опционально)</span></label>
-                        <select class="custom-select d-block w-100" id="region" name="region">
-                            <option value="0">Выберите...</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Пожалуйста выберите страну.
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email">Email <span class="text-muted">(Опционально)</span></label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                       placeholder="you@example.com">
+                                <div class="invalid-feedback">
+                                    Пожалуйста введите правильный адрес.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone">Телефон <span class="text-muted">(Опционально)</span></label>
+                                <input type="tel" class="form-control" id="phone" name="phone"
+                                       pattern="^\([0-9]+\)[0-9]+$"
+                                       placeholder="(XXX)XXXXXXX">
+                                <div class="invalid-feedback">
+                                    Введите телефон в формате (Код города)Номер
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="city">Город <span class="text-muted">(Опционально)</span></label>
-                        <select class="custom-select d-block w-100" id="city" name="city">
-                            <option value="">Выберите...</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Пожалуйста выберите город.
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="region">Регион <span class="text-muted">(Опционально)</span></label>
+                                <select class="custom-select d-block w-100" id="region" name="region">
+                                    <option value="">Выберите...</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Пожалуйста выберите регион.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="city">Город <span class="text-muted">(Опционально)</span></label>
+                                <select class="custom-select d-block w-100" id="city" name="city">
+                                    <option value="">Выберите...</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Пожалуйста выберите город.
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="mb-3">
+                            <label for="comment">Ваш комментарий</label>
+                            <textarea class="form-control" name="comment" id="comment" rows="5" required></textarea>
+                            <div class="invalid-feedback">
+                                Поле "Комментарий" обязательно к заполнению.
+                            </div>
+                        </div>
+
+                        <hr class="mb-4">
+                        <button class="btn btn-primary btn-lg btn-block" id="feedback_submit" type="submit">Отправить
+                        </button>
+
+                    </form>
+
                 </div>
-
-                <div class="mb-3">
-                    <label for="comment">Ваш комментарий</label>
-                    <textarea class="form-control" name="comment" id="comment" rows="5" required></textarea>
-                    <div class="invalid-feedback">
-                        Поле "Комментарий" обязательно к заполнению.
-                    </div>
-                </div>
-
-                <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" id="feedback_submit" type="submit">Отправить</button>
-
-            </form>
+            </div>
 
         </div>
 
@@ -136,7 +151,7 @@
         crossorigin="anonymous"></script>
 <!-- Footer Scripts -->
 
-<script type="text/javascript" src="/js/comment.js"></script>
+<script type="text/javascript" src="/static/js/comment.js"></script>
 
 
 </body>

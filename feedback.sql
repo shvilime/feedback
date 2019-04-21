@@ -29,10 +29,10 @@ CREATE TABLE feedback
   id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
   lastname varchar(100) NOT NULL,
   firstname varchar(50) NOT NULL,
-  middlename varchar(50),
+  middlename varchar(50) DEFAULT (''),
   region INTEGER REFERENCES region(id),
   city INTEGER REFERENCES city(id),
-  phone VARCHAR(30),
-  email VARCHAR(50),
+  phone VARCHAR(30) DEFAULT(''),
+  email VARCHAR(50) DEFAULT(''),
   comment TEXT
 );

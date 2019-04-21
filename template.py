@@ -2,7 +2,8 @@ import string
 
 
 class HTMLFormatter(string.Formatter):
-    """ Типа Jinja, но проще)) в основном для циклов """
+    """ Типа Jinja, но проще))
+        в основном, для реализации циклов """
 
     def format_field(self, value, spec):
         if spec.startswith('repeat'):

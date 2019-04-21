@@ -1,21 +1,25 @@
-import os
-import sqlite3
+import os, sqlite3, logging
 
 
 class DB(object):
     """ Объект для инициализации базы SQLite3  и выполнения операций с ней """
 
     def __db_initial__(self):
-        if not os.path.isfile(self.database):       # Если файл базы данных не найден
+        """ Первоначальная инициализация файла базы данных если база не найдена """
+        if not os.path.isfile(self.database):
             # Прочтем скрипт первоначального создания базы из файла
             query = open('feedback.sql', 'r').read()
-            # Проверим скрипт на завершенность, на всякий случай, хотя скрипт сделан нами и проверен
+            # Проверим скрипт на завершенность, на всякий случай
             if sqlite3.complete_statement(query):
                 # Соединимся с базой данных, получим курсур и выполним скрипт.
                 self.connect()
-                self.cursor.executescript(query)
-                self.connection.commit()
-                self.connection.close()
+                try:
+                    self.cursor.executescript(query)
+                except sqlite3.Error as e:
+                    logging.critical('Ошибка первичной инициализации базы:', e.args[0])
+                else:
+                    self.connection.commit()
+                    self.connection.close()
 
     def __init__(self, database='feedback.sqlite'):
         """ Инициализация объекта """
@@ -31,7 +35,7 @@ class DB(object):
                 self.cursor = self.connection.cursor()
                 self.connected = True
             except sqlite3.Error as e:
-                print("Ошибка соединения с базой!")
+                logging.error("Ошибка соединения с базой!")
 
     def close(self):
         """ Закрыть базу SQLite3 """
@@ -47,9 +51,9 @@ class DB(object):
             self.cursor.execute(statement)
             if statement.strip().upper().startswith('SELECT'):
                 rows = self.cursor.fetchall()
-                return rows[len(rows)-limit if limit else 0:]
+                return rows[len(rows) - limit if limit else 0:]
         except sqlite3.Error as e:
-            print('Произошла ошибка:', e.args[0])
-            print('При выполнении выражения:', statement)
+            logging.error('Произошла ошибка: {}'.format(e.args[0]))
+            logging.error('При выполнении выражения: {}'.format(statement))
         else:
             self.connection.commit()

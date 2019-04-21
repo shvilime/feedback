@@ -1,105 +1,125 @@
-import os, json
-from urllib.request import urlopen
+import json, logging
 from database import DB
 from template import HTMLFormatter
 from settings import *
 
 
-class AbstractView:
-    """ Абстрактный класс. View.
+class BaseView:
+    """
+        Базовый класс. View.
         Аттрибуты:
-        "query" - для работы с базой
+        "query_get" - запрос на получение данных для работы с базой
+        "query_post" - запрос на добавление/изменение данных для работы с базой
         "template" - имя html файла, где хранится шаблон для вывода данных
         Методы:
         get() - обработка GET запросов веб сервера
         post() - обработка POST запросов веб сервера
-        """
+    """
     template = ''
-    query = ''
+    query_get = ''
+    query_post = ''
 
     def _get_template(self):
+        """ Считывает шаблон из html файла для вывода """
         content = ''
         if self.template:
             path = ROOT + '/html/' + self.template
-            with open(path, 'r') as fh:
-                content = fh.read()
+            try:
+                with open(path, 'r') as fh:
+                    content = fh.read()
+            except IOError:
+                logging.error('Ошибка при чтении темплейта - {}'.format(path))
         return content
 
-    def get_data(self, params=None):
-        if self.query:
-            if params:
-                self.query = self.query.format(*[v[0] for k, v in params.items()])
+    def _process_query(self, query='', params=None):
+        """
+            Заполняет запрос к базе параметрами и передает DB на исполнение
+            возвращает список строк-кортежей
+        """
+        data = []
+        if query:
             db = DB()
-            return db.execute(self.query)
+            if params:
+                query = query.format(*[v[0] for k, v in params.items()])
+            data = db.execute(query)
+        return data
 
     def get(self, params=None, content_type="text/html"):
+        """ Формирует контент для web сервера по запросу GET """
         content = ""
+        data = self._process_query(self.query_get, params)
         if content_type == "text/html":
-            content = self._get_template()
-            values = None
-            if self.query.strip().upper().startswith('SELECT'):
-                values = self.get_data(params)
+            # Создадим объект для форматирования html
             hf = HTMLFormatter()
-            content = hf.format(content, rows=values)
+            try:
+                content = hf.format(self._get_template(), rows=data)
+            except:
+                logging.error('Ошибка обработки шаблона {}'.format(self.template))
         elif content_type == "text/json":
-            values = self.get_data(params)
-            content = json.dumps(values)
+            content = json.dumps(data)
         return content
 
     def post(self, params=None):
-        values = self.get_data(params)
+        """ Формирует контент для web сервера по запросу POST """
+        self._process_query(self.query_post, params)
         return "OK"
 
 
-class MainTmpl(AbstractView):
+class MainTmpl(BaseView):
     """ Просмотр основной страницы """
     template = 'index.html'
 
 
-class CommentTmpl(AbstractView):
+class View404Tmpl(BaseView):
+    """ Просмотр 404 страницы """
+    template = '404.html'
+
+
+class CommentTmpl(BaseView):
     """ Добавление комментария """
     template = 'comment.html'
-    query = '''INSERT INTO feedback (firstname, lastname, middlename, email, phone, region, city, comment)
-        VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')'''
+    query_post = '''INSERT INTO feedback (firstname, lastname, middlename, email, phone, region, city, comment)
+                    VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')'''
 
 
-class ViewTmpl(AbstractView):
+class ViewTmpl(BaseView):
     """ Просмотр списка отзывов """
     template = 'view.html'
-    query = '''select f.id, f.lastname || ' ' || f.firstname || ' ' || IFNULL(f.middlename,'') as user,
-               IFNULL(f.email,''), IFNULL(f.phone,''), IFNULL(r.name,'') as region, IFNULL(c.name,'') as city, f.comment
-               from feedback f left join city c on (f.city = c.id) left join region r on (f.region = r.id)'''
+    query_get = '''SELECT f.id, f.lastname || ' ' || f.firstname || ' ' || f.middlename AS USER,
+                   f.email, f.phone, IFNULL(r.name,'') AS region, IFNULL(c.name,'') AS city, f.comment
+                   FROM feedback f LEFT JOIN city c ON (f.city = c.id) LEFT JOIN region r ON (f.region = r.id)'''
 
 
-class DelFeedbackTmpl(AbstractView):
+class DelFeedbackTmpl(BaseView):
     """ Удаление отзыва """
-    query = '''DELETE FROM feedback WHERE id = {};'''
+    query_post = '''DELETE FROM feedback WHERE id = {}'''
 
 
-class StatTmpl(AbstractView):
+class StatTmpl(BaseView):
     """ Просмотр статистики отзывов по регионам """
     template = 'stat.html'
-    query = '''select * from (select r.id, r.name, count(f.id) as col from region r 
-               left outer join feedback f on r.id = f.region
-               group by r.name)
-               where col>=1'''
+    query_get = '''SELECT r.id, r.name, COUNT(f.id) AS col FROM region r 
+                   LEFT OUTER JOIN feedback f ON r.id = f.region
+                   GROUP BY r.id
+                   HAVING col >={}'''.format(STAT_LIMIT)
 
 
-class StatRegTmpl(AbstractView):
+class StatRegTmpl(BaseView):
     """ Просмотр статистики в разрезе одного региона """
     template = 'statreg.html'
-    query = '''select * from (select c.region, c.name, count(f.id) as col from city c 
-               left outer join feedback f on c.id = f.city
-               group by c.name)
-               where col>0 and region='{}' '''
+    query_get = '''SELECT f.region, c.name, COUNT(f.id) AS col FROM city c 
+                   LEFT OUTER JOIN feedback f ON c.id = f.city
+                   WHERE f.region={}
+                   GROUP BY c.id
+                   HAVING col>0'''
 
 
-class ListRegionTmpl(AbstractView):
+class ListRegionTmpl(BaseView):
     """ Выбрать список регионов для поля формы """
-    query = '''select * from region'''
+    query_get = '''SELECT * FROM region'''
 
 
-class ListCityTmpl(AbstractView):
+class ListCityTmpl(BaseView):
     """ Выбрать список городов региона для поля формы """
-    query = '''select * from city 
-               where region='{}' '''
+    query_get = '''SELECT * FROM city 
+                   WHERE region={} '''
