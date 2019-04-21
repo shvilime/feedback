@@ -104,7 +104,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         """ Обработа POST запроса """
-        content = ''
+        content = 'POST request for {}'.format(self.path)
         # Получим путь без учета возможных параметров запроса
         path, params = self._parse_path()
         # Определим тип контента
@@ -121,10 +121,13 @@ class MyHandler(BaseHTTPRequestHandler):
                 # Получим class из модуля views и вызовем его для передачи данных на обработку
                 view_name = self.paths.get(path).get('view', '')
                 tmpl = getattr(views, view_name)()
-                content = tmpl.post(params)
-                # Перенаправим после POST на родительский адрес
-                success_url = "/" + "".join(self.path.split('/')[:-1])
-                self._set_headers(302, 'Location', success_url)
+                tmpl.post(params)
+                # Попробуем получить из параметров следующий адрес next для редиректа
+                # если параметра нет, то переправим на родительский адрес
+                next_url = "".join(params.get('next', []))
+                if not next_url:
+                    next_url = "/" + "".join(self.path.split('/')[:-1])
+                self._set_headers(302, 'Location', next_url)
         # Установим заголовки и выведем контент
         self._set_headers(status, 'Content-type', content_type)
         # Если контент это строка, то переведем строку в бинарную форму

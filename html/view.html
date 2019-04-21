@@ -67,7 +67,8 @@
                     <td>{{item[5]}}</td>
                     <td>{{item[6]}}</td>
                     <td>
-                        <button class="btn" data-href="/view/delfeedback?id={{item[0]}}" data-toggle="modal"
+                        <button class="btn" data-href="/view/delfeedback?id={{item[0]}}"
+                                data-toggle="modal" data-id="{{item[0]}}"
                                 data-target="#confirm-delete">
                             <i class="fa fa-trash"></i>
                         </button>
@@ -88,9 +89,12 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">Удаление отзыва</div>
+            <div class="modal-header">
+                УДАЛЕНИЕ ОТЗЫВА
+            </div>
             <div class="modal-body">
-                Вы действительно хотите удалить отзыв? Данное действие невозможно отменить.
+                <span>Вы действительно хотите удалить отзыв №</span><span id="feedback-id-for-delete"></span>?
+                <div>Данное действие невозможно отменить.</div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Отменить</button>

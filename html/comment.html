@@ -91,7 +91,7 @@
                                        pattern="^\([0-9]+\)[0-9]+$"
                                        placeholder="(XXX)XXXXXXX">
                                 <div class="invalid-feedback">
-                                    Введите телефон в формате (Код города)Номер
+                                    Введите телефон в формате (Код)Номер
                                 </div>
                             </div>
                         </div>
@@ -124,6 +124,8 @@
                                 Поле "Комментарий" обязательно к заполнению.
                             </div>
                         </div>
+
+                        <input type="hidden" name="next" value="/view" />
 
                         <hr class="mb-4">
                         <button class="btn btn-primary btn-lg btn-block" id="feedback_submit" type="submit">Отправить

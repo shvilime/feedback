@@ -18,8 +18,7 @@ class DB(object):
                 except sqlite3.Error as e:
                     logging.critical('Ошибка первичной инициализации базы:', e.args[0])
                 else:
-                    self.connection.commit()
-                    self.connection.close()
+                    self.close()
 
     def __init__(self, database='feedback.sqlite'):
         """ Инициализация объекта """

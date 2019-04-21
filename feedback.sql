@@ -34,5 +34,5 @@ CREATE TABLE feedback
   city INTEGER REFERENCES city(id),
   phone VARCHAR(30) DEFAULT(''),
   email VARCHAR(50) DEFAULT(''),
-  comment TEXT
+  comment TEXT NOT NULL
 );

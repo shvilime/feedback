@@ -35,8 +35,11 @@ $.urlParamsDecode = function (url) {
 (function ($) {
 
     $('#confirm-delete').on('show.bs.modal', function (e) {
-        // При нажатии кнопки удалить отзыв, вызвать модельное окно для подтверждения действия
+        // После отображения модального окна
+        // 1. Записать кнопке удаления ссылку, которую нужно послать серверу
         $(this).find('#btn-delete-feedback').attr('data-href', $(e.relatedTarget).data('href'));
+        // 2. Показать номер записи, которую мы хоти удалить, для визуальности
+        $(this).find('#feedback-id-for-delete').html($(e.relatedTarget).data('id'));
     });
 
     $('#btn-delete-feedback').on('click', function (e) {

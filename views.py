@@ -53,8 +53,9 @@ class BaseView:
             hf = HTMLFormatter()
             try:
                 content = hf.format(self._get_template(), rows=data)
-            except:
-                logging.error('Ошибка обработки шаблона {}'.format(self.template))
+            except Exception as e:
+                logging.error('Ошибка: {}'.format(e.args[0]))
+                logging.error('При обработке шаблона: {}'.format(self.template))
         elif content_type == "text/json":
             content = json.dumps(data)
         return content

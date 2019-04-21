@@ -5,7 +5,7 @@ var $ = jQuery.noConflict();
 
     $(document).ready(function (e) {
         // Когда загрузится страница выполнить ajax для заполнения из базы поля region
-        $('#region').empty().append('<option value="">Выберите ...</option>');
+        $('#region').empty().append('<option value="0">Выберите ...</option>');
         $.ajax({
             url: '/listregion',
             dataType: 'json',
@@ -24,7 +24,7 @@ var $ = jQuery.noConflict();
     $('#region').on('change', function (e) {
         // Когда изменили поле region выполнить ajax для заполнения из базы поля city
         let regionid = $('#region').val();
-        $('#city').empty().append('<option value="">Выберите ...</option>');
+        $('#city').empty().append('<option value="0">Выберите ...</option>');
         $.ajax({
             url: '/listcity',
             dataType: 'json',
