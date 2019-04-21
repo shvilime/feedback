@@ -15,10 +15,6 @@ class MyHandler(BaseHTTPRequestHandler):
         '/view/delfeedback': {'view': 'DelFeedbackTmpl', 'type': 'text/html'},
         '/listregion': {'view': 'ListRegionTmpl', 'type': 'text/json'},
         '/listcity': {'view': 'ListCityTmpl', 'type': 'text/json'}
-
-        # '/static/css/feedback.css': {'static': '/static/css/feedback.css', 'type': 'text/css'},
-        # '/static/js/view.js': {'static': '/static/js/view.js', 'type': 'text/javascript'},
-        # '/static/js/comment.js': {'static': '/static/js/comment.js', 'type': 'text/javascript'}
     }
 
 
